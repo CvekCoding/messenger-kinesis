@@ -5,14 +5,24 @@ declare(strict_types=1);
 namespace Cvek\Kinesis\Kinesis;
 
 use Aws\Kinesis\KinesisClient;
+use Cvek\Kinesis\Messenger\Transport\Dsn;
 
 class KinesisFactory
 {
     private KinesisClient $client;
 
-    public function __construct(string $key, string $secret)
+    public function __construct(Dsn $dsn)
     {
-        $this->client = new KinesisClient(['credentials' => ['key'=> $key, 'secret' => $secret]]);
+        $this->client = new KinesisClient([
+            'endpoint' => "{$dsn->getScheme()}://{$dsn->getHost()}",
+            'version' => $dsn->getVersion(),
+            'region' => $dsn->getRegion(),
+            'credentials' => [
+                'key'=> $dsn->getKey(),
+                'secret' => $dsn->getSecret(),
+            ],
+        ]);
+
     }
 
     public function getClient(): KinesisClient

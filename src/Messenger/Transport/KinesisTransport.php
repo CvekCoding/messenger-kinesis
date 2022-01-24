@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Cvek\Kinesis\Messenger\Transport;
 
-use Cvek\Kinesis\Kinesis\KinesisFactory;
+use Aws\Kinesis\KinesisClient;
 use Cvek\Kinesis\Messenger\Receiver\KinesisReceiverProperties;
 use Cvek\Kinesis\Messenger\Sender\KinesisSenderProperties;
 use Cvek\Kinesis\Messenger\Receiver\KinesisReceiver;
@@ -17,29 +17,23 @@ use Symfony\Component\Messenger\Transport\TransportInterface;
 class KinesisTransport implements TransportInterface
 {
     private LoggerInterface $logger;
-
     private SerializerInterface $serializer;
-
-    private KinesisFactory $kinesisFactory;
-
+    private KinesisClient $kinesisClient;
     private KinesisSenderProperties $kinesisSenderProperties;
-
     private KinesisReceiverProperties $kinesisReceiverProperties;
-
     private KinesisSender $sender;
-
     private KinesisReceiver $receiver;
 
     public function __construct(
         LoggerInterface           $logger,
         SerializerInterface       $serializer,
-        KinesisFactory            $kinesisFactory,
+        KinesisClient             $kinesisClient,
         KinesisSenderProperties   $kafkaSenderProperties,
         KinesisReceiverProperties $kafkaReceiverProperties
     ) {
         $this->logger = $logger;
         $this->serializer = $serializer;
-        $this->kinesisFactory = $kinesisFactory;
+        $this->kinesisClient = $kinesisClient;
         $this->kinesisSenderProperties = $kafkaSenderProperties;
         $this->kinesisReceiverProperties = $kafkaReceiverProperties;
     }
@@ -69,7 +63,7 @@ class KinesisTransport implements TransportInterface
         return $this->sender ?? $this->sender = new KinesisSender(
             $this->logger,
             $this->serializer,
-            $this->kinesisFactory,
+            $this->kinesisClient,
             $this->kinesisSenderProperties
         );
     }
@@ -79,7 +73,7 @@ class KinesisTransport implements TransportInterface
         return $this->receiver ?? $this->receiver = new KinesisReceiver(
             $this->logger,
             $this->serializer,
-            $this->kinesisFactory,
+            $this->kinesisClient,
             $this->kinesisReceiverProperties
         );
     }
