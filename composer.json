@@ -1,0 +1,46 @@
+{
+  "name": "cvek/messenger-kinesis",
+  "type": "symfony-bundle",
+  "description": "Symfony Messenger Kinesis Transport",
+  "keywords": ["kinesis", "symfony", "messenger", "transport", "queue", "bundle"],
+  "license": "MIT",
+  "require": {
+    "php": "^7.4|8.*",
+    "ext-json": "*",
+    "symfony/config": "^3.0||^4.0||^5.0",
+    "symfony/dependency-injection": "^3.4.26||^4.1.12|^5.0",
+    "symfony/http-kernel": "^3.0||^4.0||^5.0",
+    "symfony/messenger": "^4.4||^5.0",
+    "psr/http-client": "^1.0",
+    "psr/http-factory": "^1.0",
+    "psr/http-message": "^1.0",
+    "psr/log": "^1.0.1 || ^2.0 || ^3.0",
+    "aws/aws-sdk-php": "^3.209"
+  },
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "^2.16",
+    "symfony/phpunit-bridge": "^5.0",
+    "symfony/framework-bundle": "^5.0",
+    "symfony/serializer": "^5.0",
+    "symfony/property-access": "^5.0",
+    "phpstan/phpstan": "^0.12.52",
+    "nyholm/psr7": "^1.3"
+  },
+  "autoload": {
+    "psr-4": {
+      "Cvek\\Kinesis\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Cvek\\Kinesis\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "test": [
+      "vendor/bin/php-cs-fixer fix --config=.php_cs.dist -v --dry-run --stop-on-violation --using-cache=no",
+      "vendor/bin/simple-phpunit tests/Unit --log-junit results/tests/junit.xml --coverage-html results/coverage-report --coverage-clover results/clover.xml",
+      "vendor/bin/phpstan analyse src --level max --no-progress"
+    ]
+  }
+}
