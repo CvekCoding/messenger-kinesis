@@ -38,7 +38,7 @@ class KinesisSender implements SenderInterface
             $this->kinesisClient->putRecord([
                 'StreamName' => $this->properties->getStreamName(),
                 'Data' => $payload['body'],
-                'PartitionKey' => $payload['body'],
+                'PartitionKey' => substr($payload['body'], 0, 255),
             ]);
         } catch (AwsException $e) {
             $this->logger->error($e->getAwsErrorMessage());

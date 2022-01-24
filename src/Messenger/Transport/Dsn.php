@@ -14,16 +14,14 @@ namespace Cvek\Kinesis\Messenger\Transport;
 
 final class Dsn
 {
-    private string $scheme;
     private string $host;
     private string $key;
     private string $secret;
     private string $region;
     private string $version;
 
-    public function __construct(string $scheme, string $host, string $key, string $secret, $region, $version)
+    public function __construct(string $host, string $key, string $secret, $region, $version)
     {
-        $this->scheme = $scheme;
         $this->host = $host;
         $this->key = $key;
         $this->secret = $secret;
@@ -35,10 +33,6 @@ final class Dsn
     {
         if (false === $parsedDsn = \parse_url($dsn)) {
             throw new \InvalidArgumentException(sprintf('The "%s" mailer DSN is invalid.', $dsn));
-        }
-
-        if (!isset($parsedDsn['scheme'])) {
-            throw new \InvalidArgumentException(sprintf('The "%s" mailer DSN must contain a scheme.', $dsn));
         }
 
         if (!isset($parsedDsn['host'])) {
@@ -53,11 +47,6 @@ final class Dsn
         $version = $options['version'] ?? $query['version'] ?? '';
 
         return new self($parsedDsn['scheme'], $parsedDsn['host'], $key, $secret, $region, $version);
-    }
-
-    public function getScheme(): string
-    {
-        return $this->scheme;
     }
 
     public function getHost(): string

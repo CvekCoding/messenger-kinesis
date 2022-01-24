@@ -14,7 +14,7 @@ class KinesisFactory
     public function __construct(Dsn $dsn)
     {
         $this->client = new KinesisClient([
-            'endpoint' => "{$dsn->getScheme()}://{$dsn->getHost()}",
+            'endpoint' => "https://{$dsn->getHost()}",
             'version' => $dsn->getVersion(),
             'region' => $dsn->getRegion(),
             'credentials' => [
