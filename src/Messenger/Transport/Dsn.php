@@ -46,7 +46,7 @@ final class Dsn
         $region = $options['region'] ?? $query['region'] ?? '';
         $version = $options['version'] ?? $query['version'] ?? '';
 
-        return new self($parsedDsn['scheme'], $parsedDsn['host'], $key, $secret, $region, $version);
+        return new self($parsedDsn['host'], $key, $secret, $region, $version);
     }
 
     public function getHost(): string
